@@ -105,3 +105,4 @@ JOIN stg_daily_targeting dt ON c.campaign_id = dt.campaign_id
 LEFT JOIN clean_payments_success p ON dt.account_id = p.account_id
 GROUP BY c.strategy_version
 ORDER BY c.strategy_version;
+

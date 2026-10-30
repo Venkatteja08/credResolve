@@ -104,3 +104,4 @@ SELECT
 FROM stg_call_dispositions cd
 LEFT JOIN stg_calls c ON cd.call_id = c.call_id
 LEFT JOIN dim_agent_crosswalk ac ON cd.agent_id = ac.agent_id;
+

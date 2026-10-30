@@ -48,3 +48,4 @@ conn.close()
 if os.path.exists(DB_TEST):
     os.remove(DB_TEST)
 print("\nAll SQL scripts validated and reproducible!")
+

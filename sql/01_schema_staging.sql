@@ -213,3 +213,4 @@ CREATE TABLE IF NOT EXISTS stg_account_status_history (
     source TEXT,
     recorded_at TEXT
 );
+

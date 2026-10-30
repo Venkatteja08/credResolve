@@ -107,3 +107,4 @@ Operational teams frequently claim credit for payments by expanding the attribut
 1. The historical strategy change produced **no incremental value**.
 2. Claims of operational improvement were masked by **calendar day variations** and **unconstrained attribution windows**.
 3. Any future capital investment must **not** repeat the mistake of superficial campaign rebranding; it must introduce genuine predictive discrimination and operational lift.
+

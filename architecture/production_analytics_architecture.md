@@ -175,3 +175,4 @@ The pipeline enforces blocking CI/CD and runtime tests before metric tables are 
   $$\text{Daily Run Rate} = \frac{\text{Net Settled Cash}}{\text{Active Operating Days in Month}}$$
   Disallowing raw un-normalized month-to-month total comparisons in all C-suite dashboards.
 * **Timezone Guard:** Continuous check for timestamps lacking explicit UTC offsets.
+

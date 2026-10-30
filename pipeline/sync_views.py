@@ -33,3 +33,4 @@ for sfile in sql_files:
 conn.commit()
 conn.close()
 print("\nAll staging, clean, and KPI tables successfully synchronized in golden_collections.db!")
+
