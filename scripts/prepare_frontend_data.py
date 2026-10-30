@@ -108,3 +108,4 @@ with open("dashboard/frontend_data.json", "w") as f:
     json.dump(data, f, indent=2)
 
 print("Saved dashboard/frontend_data.json successfully!")
+
