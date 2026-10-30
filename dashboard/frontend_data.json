@@ -1,0 +1,574 @@
+{
+  "monthly_benchmark": [
+    {
+      "payment_month": "2026-01",
+      "calendar_days": 31,
+      "raw_reported_recovery": 191133284.42,
+      "raw_mom_growth_pct": NaN,
+      "net_settled_recovery": 180684641.08,
+      "net_mom_growth_pct": NaN,
+      "daily_run_rate_recovery": 5828536.81,
+      "daily_run_rate_mom_pct": NaN,
+      "recovery_per_portfolio_account": 6022.82
+    },
+    {
+      "payment_month": "2026-02",
+      "calendar_days": 28,
+      "raw_reported_recovery": 174097287.96,
+      "raw_mom_growth_pct": -8.91,
+      "net_settled_recovery": 159435251.26,
+      "net_mom_growth_pct": -11.76,
+      "daily_run_rate_recovery": 5694116.12,
+      "daily_run_rate_mom_pct": -2.31,
+      "recovery_per_portfolio_account": 5314.51
+    },
+    {
+      "payment_month": "2026-03",
+      "calendar_days": 31,
+      "raw_reported_recovery": 193233384.29,
+      "raw_mom_growth_pct": 10.99,
+      "net_settled_recovery": 171929617.53,
+      "net_mom_growth_pct": 7.84,
+      "daily_run_rate_recovery": 5546116.69,
+      "daily_run_rate_mom_pct": -2.6,
+      "recovery_per_portfolio_account": 5730.99
+    },
+    {
+      "payment_month": "2026-04",
+      "calendar_days": 30,
+      "raw_reported_recovery": 178427017.05,
+      "raw_mom_growth_pct": -7.66,
+      "net_settled_recovery": 153857498.51,
+      "net_mom_growth_pct": -10.51,
+      "daily_run_rate_recovery": 5128583.28,
+      "daily_run_rate_mom_pct": -7.53,
+      "recovery_per_portfolio_account": 5128.58
+    },
+    {
+      "payment_month": "2026-05",
+      "calendar_days": 31,
+      "raw_reported_recovery": 187048144.34,
+      "raw_mom_growth_pct": 4.83,
+      "net_settled_recovery": 154340691.0,
+      "net_mom_growth_pct": 0.31,
+      "daily_run_rate_recovery": 4978731.97,
+      "daily_run_rate_mom_pct": -2.92,
+      "recovery_per_portfolio_account": 5144.69
+    },
+    {
+      "payment_month": "2026-06",
+      "calendar_days": 30,
+      "raw_reported_recovery": 178724493.46,
+      "raw_mom_growth_pct": -4.45,
+      "net_settled_recovery": 145395522.16,
+      "net_mom_growth_pct": -5.8,
+      "daily_run_rate_recovery": 4846517.41,
+      "daily_run_rate_mom_pct": -2.66,
+      "recovery_per_portfolio_account": 4846.52
+    },
+    {
+      "payment_month": "2026-07",
+      "calendar_days": 31,
+      "raw_reported_recovery": 190278846.88,
+      "raw_mom_growth_pct": 6.46,
+      "net_settled_recovery": 147021570.08,
+      "net_mom_growth_pct": 1.12,
+      "daily_run_rate_recovery": 4742631.29,
+      "daily_run_rate_mom_pct": -2.14,
+      "recovery_per_portfolio_account": 4900.72
+    },
+    {
+      "payment_month": "2026-08",
+      "calendar_days": 8,
+      "raw_reported_recovery": 48543467.93,
+      "raw_mom_growth_pct": -74.49,
+      "net_settled_recovery": 37244388.55,
+      "net_mom_growth_pct": -74.67,
+      "daily_run_rate_recovery": 4655548.57,
+      "daily_run_rate_mom_pct": -1.84,
+      "recovery_per_portfolio_account": 1241.48
+    }
+  ],
+  "risk_loan_matrix": {
+    "AUTO": {
+      "HIGH": 40.03,
+      "LOW": 40.51,
+      "MEDIUM": 40.58,
+      "NPA": 40.22
+    },
+    "BNPL": {
+      "HIGH": 37.09,
+      "LOW": 40.4,
+      "MEDIUM": 38.31,
+      "NPA": 40.03
+    },
+    "CONSUMER": {
+      "HIGH": 41.49,
+      "LOW": 42.39,
+      "MEDIUM": 40.48,
+      "NPA": 40.75
+    },
+    "CREDIT_CARD": {
+      "HIGH": 38.86,
+      "LOW": 41.27,
+      "MEDIUM": 39.13,
+      "NPA": 39.77
+    },
+    "PERSONAL": {
+      "HIGH": 40.14,
+      "LOW": 39.82,
+      "MEDIUM": 41.63,
+      "NPA": 37.82
+    }
+  },
+  "monthly_by_loan": {
+    "AUTO": {
+      "2026-01": 3.72,
+      "2026-02": 3.22,
+      "2026-03": 3.55,
+      "2026-04": 3.29,
+      "2026-05": 3.18,
+      "2026-06": 2.82,
+      "2026-07": 2.95,
+      "2026-08": 0.8
+    },
+    "BNPL": {
+      "2026-01": 3.61,
+      "2026-02": 2.93,
+      "2026-03": 3.16,
+      "2026-04": 3.17,
+      "2026-05": 2.96,
+      "2026-06": 2.63,
+      "2026-07": 2.83,
+      "2026-08": 0.8
+    },
+    "CONSUMER": {
+      "2026-01": 3.67,
+      "2026-02": 3.21,
+      "2026-03": 3.57,
+      "2026-04": 2.94,
+      "2026-05": 3.31,
+      "2026-06": 3.09,
+      "2026-07": 3.05,
+      "2026-08": 0.7
+    },
+    "CREDIT_CARD": {
+      "2026-01": 3.69,
+      "2026-02": 3.44,
+      "2026-03": 3.55,
+      "2026-04": 3.07,
+      "2026-05": 2.97,
+      "2026-06": 3.03,
+      "2026-07": 2.81,
+      "2026-08": 0.76
+    },
+    "PERSONAL": {
+      "2026-01": 3.37,
+      "2026-02": 3.15,
+      "2026-03": 3.36,
+      "2026-04": 2.92,
+      "2026-05": 3.01,
+      "2026-06": 2.97,
+      "2026-07": 3.07,
+      "2026-08": 0.66
+    }
+  },
+  "monthly_by_risk": {
+    "HIGH": {
+      "2026-01": 4.63,
+      "2026-02": 3.91,
+      "2026-03": 4.39,
+      "2026-04": 3.6,
+      "2026-05": 4.16,
+      "2026-06": 3.76,
+      "2026-07": 3.52,
+      "2026-08": 1.04
+    },
+    "LOW": {
+      "2026-01": 4.42,
+      "2026-02": 3.95,
+      "2026-03": 4.3,
+      "2026-04": 4.13,
+      "2026-05": 3.81,
+      "2026-06": 3.68,
+      "2026-07": 3.89,
+      "2026-08": 0.82
+    },
+    "MEDIUM": {
+      "2026-01": 4.59,
+      "2026-02": 4.13,
+      "2026-03": 4.14,
+      "2026-04": 3.88,
+      "2026-05": 3.71,
+      "2026-06": 3.86,
+      "2026-07": 3.87,
+      "2026-08": 0.82
+    },
+    "NPA": {
+      "2026-01": 4.42,
+      "2026-02": 3.97,
+      "2026-03": 4.35,
+      "2026-04": 3.78,
+      "2026-05": 3.76,
+      "2026-06": 3.23,
+      "2026-07": 3.42,
+      "2026-08": 1.05
+    }
+  },
+  "vendor_performance": [
+    {
+      "vendor_name": "Airtel",
+      "total_calls": 30208,
+      "answered_calls": 5977,
+      "contact_rate": 19.79,
+      "avg_duration_sec": 451.0
+    },
+    {
+      "vendor_name": "Exotel",
+      "total_calls": 11917,
+      "answered_calls": 2326,
+      "contact_rate": 19.52,
+      "avg_duration_sec": 447.3
+    },
+    {
+      "vendor_name": "Knowlarity",
+      "total_calls": 17858,
+      "answered_calls": 3693,
+      "contact_rate": 20.68,
+      "avg_duration_sec": 452.3
+    },
+    {
+      "vendor_name": "TataTele",
+      "total_calls": 12145,
+      "answered_calls": 2374,
+      "contact_rate": 19.55,
+      "avg_duration_sec": 450.6
+    },
+    {
+      "vendor_name": "Twilio",
+      "total_calls": 17951,
+      "answered_calls": 3526,
+      "contact_rate": 19.64,
+      "avg_duration_sec": 452.7
+    }
+  ],
+  "attempt_performance": [
+    {
+      "attempt_no": 1,
+      "total_attempts": 17089,
+      "connected": 3465,
+      "connect_rate": 20.28
+    },
+    {
+      "attempt_no": 2,
+      "total_attempts": 17100,
+      "connected": 3383,
+      "connect_rate": 19.78
+    },
+    {
+      "attempt_no": 3,
+      "total_attempts": 17201,
+      "connected": 3538,
+      "connect_rate": 20.57
+    },
+    {
+      "attempt_no": 4,
+      "total_attempts": 17252,
+      "connected": 3472,
+      "connect_rate": 20.13
+    },
+    {
+      "attempt_no": 5,
+      "total_attempts": 16952,
+      "connected": 3406,
+      "connect_rate": 20.09
+    },
+    {
+      "attempt_no": 6,
+      "total_attempts": 17207,
+      "connected": 3336,
+      "connect_rate": 19.39
+    },
+    {
+      "attempt_no": 7,
+      "total_attempts": 17199,
+      "connected": 3423,
+      "connect_rate": 19.9
+    }
+  ],
+  "accounting_log": {
+    "borrowers": {
+      "raw_records": 30600,
+      "rejected_records": 600,
+      "corrected_records": 0,
+      "golden_records": 11015,
+      "notes": "Removed exact duplicates and resolved unique borrower profiles."
+    },
+    "accounts": {
+      "raw_records": 30000,
+      "rejected_records": 0,
+      "corrected_records": 30000,
+      "golden_records": 30000,
+      "notes": "Validated primary key account_id; appended standardized DPD risk buckets."
+    },
+    "agents": {
+      "raw_records": 30000,
+      "rejected_records": 0,
+      "corrected_records": 29996,
+      "golden_records": 1099,
+      "notes": "Resolved multi-agent ID fragmentation into 1,099 canonical employees."
+    },
+    "agent_sessions": {
+      "raw_records": 15000,
+      "rejected_records": 0,
+      "corrected_records": 15000,
+      "golden_records": 15000,
+      "notes": "Timezone normalized to IST; validated session duration hours."
+    },
+    "calls": {
+      "raw_records": 91350,
+      "rejected_records": 1271,
+      "corrected_records": 90079,
+      "golden_records": 90079,
+      "notes": "Standardized UTC/Dubai timestamps to IST; resolved employee IDs; tagged prime hours."
+    },
+    "call_attempts": {
+      "raw_records": 120000,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 120000,
+      "notes": "Validated unique attempt_id; flagged connection events."
+    },
+    "call_dispositions": {
+      "raw_records": 35000,
+      "rejected_records": 0,
+      "corrected_records": 35027,
+      "golden_records": 35027,
+      "notes": "Unified PTP codes; audited phantom dispositions on unanswered calls."
+    },
+    "whatsapp_events": {
+      "raw_records": 60600,
+      "rejected_records": 600,
+      "corrected_records": 0,
+      "golden_records": 60000,
+      "notes": "Deduplicated events; tagged engagement funnel milestones."
+    },
+    "sms_events": {
+      "raw_records": 45000,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 45000,
+      "notes": "Validated event IDs; tagged payment link click events."
+    },
+    "field_visits": {
+      "raw_records": 25000,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 25000,
+      "notes": "Standardized field outcomes; flagged contact and on-field collection events."
+    },
+    "promises_to_pay": {
+      "raw_records": 18000,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 18000,
+      "notes": "Audited promised amount commitments and kept vs broken statuses."
+    },
+    "payments": {
+      "raw_records": 25500,
+      "rejected_records": 2681,
+      "corrected_records": 15350,
+      "golden_records": 15350,
+      "notes": "Removed 2195 retry/duplicate SUCCESS records (saved Rs 16.66 Cr double-counting)."
+    },
+    "campaigns": {
+      "raw_records": 120,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 120,
+      "notes": "Validated 120 campaign configurations across legacy and modern versions."
+    },
+    "daily_targeting": {
+      "raw_records": 45000,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 45000,
+      "notes": "Validated 45,000 targeting dispatches across channels and priorities."
+    },
+    "complaints": {
+      "raw_records": 8000,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 8000,
+      "notes": "Validated borrower complaints and escalation severities."
+    },
+    "vendor_telephony": {
+      "raw_records": 15,
+      "rejected_records": 0,
+      "corrected_records": 0,
+      "golden_records": 15,
+      "notes": "Validated 15 telephony carrier gateway definitions."
+    },
+    "account_status_history": {
+      "raw_records": 60000,
+      "rejected_records": 0,
+      "corrected_records": 25999,
+      "golden_records": 60000,
+      "notes": "Resolved event-time history and effective end-state statuses."
+    }
+  },
+  "disposition_audit": [
+    {
+      "call_status": "ANSWERED",
+      "total_dispositions": 7155,
+      "ptp_count": 1572,
+      "paid_count": 790,
+      "callback_count": 778,
+      "dispute_count": 821
+    },
+    {
+      "call_status": "BUSY",
+      "total_dispositions": 7008,
+      "ptp_count": 1585,
+      "paid_count": 766,
+      "callback_count": 844,
+      "dispute_count": 722
+    },
+    {
+      "call_status": "FAILED",
+      "total_dispositions": 7130,
+      "ptp_count": 1594,
+      "paid_count": 756,
+      "callback_count": 790,
+      "dispute_count": 783
+    },
+    {
+      "call_status": "NO_ANSWER",
+      "total_dispositions": 7163,
+      "ptp_count": 1579,
+      "paid_count": 783,
+      "callback_count": 776,
+      "dispute_count": 783
+    },
+    {
+      "call_status": "VOICEMAIL",
+      "total_dispositions": 7092,
+      "ptp_count": 1624,
+      "paid_count": 782,
+      "callback_count": 751,
+      "dispute_count": 775
+    }
+  ],
+  "timezone_audit": [
+    {
+      "raw_timezone": "Asia/Dubai",
+      "total_calls": 30019,
+      "naive_prime": 13891,
+      "ist_prime": 13775
+    },
+    {
+      "raw_timezone": "Asia/Kolkata",
+      "total_calls": 30067,
+      "naive_prime": 13637,
+      "ist_prime": 13637
+    },
+    {
+      "raw_timezone": "UTC",
+      "total_calls": 29993,
+      "naive_prime": 13706,
+      "ist_prime": 13757
+    }
+  ],
+  "duplicate_sample": [
+    {
+      "payment_reference": null,
+      "attempts_count": 265,
+      "single_amount": 349.83,
+      "gross_amount": 19764451.43,
+      "excess_amount": 19764101.6,
+      "first_seen": "2026-01-01 05:16:02",
+      "last_seen": "2026-08-08 14:46:46"
+    },
+    {
+      "payment_reference": "TXN0000059802",
+      "attempts_count": 4,
+      "single_amount": 61153.6,
+      "gross_amount": 461940.12,
+      "excess_amount": 400786.52,
+      "first_seen": "2026-02-22 23:24:34",
+      "last_seen": "2026-05-06 19:41:27"
+    },
+    {
+      "payment_reference": "TXN0000052624",
+      "attempts_count": 4,
+      "single_amount": 94097.66,
+      "gross_amount": 455402.44,
+      "excess_amount": 361304.78,
+      "first_seen": "2026-02-16 03:12:37",
+      "last_seen": "2026-07-18 15:17:53"
+    },
+    {
+      "payment_reference": "TXN0000018649",
+      "attempts_count": 4,
+      "single_amount": 15790.11,
+      "gross_amount": 369981.67,
+      "excess_amount": 354191.56,
+      "first_seen": "2026-04-23 08:32:26",
+      "last_seen": "2026-06-03 18:57:33"
+    },
+    {
+      "payment_reference": "TXN0000008956",
+      "attempts_count": 4,
+      "single_amount": 70387.3,
+      "gross_amount": 423744.43,
+      "excess_amount": 353357.13,
+      "first_seen": "2026-04-11 11:10:32",
+      "last_seen": "2026-07-22 07:51:39"
+    },
+    {
+      "payment_reference": "TXN0000037243",
+      "attempts_count": 4,
+      "single_amount": 27935.45,
+      "gross_amount": 375067.21,
+      "excess_amount": 347131.76,
+      "first_seen": "2026-01-05 16:46:16",
+      "last_seen": "2026-05-06 21:59:27"
+    },
+    {
+      "payment_reference": "TXN0000050468",
+      "attempts_count": 5,
+      "single_amount": 40930.14,
+      "gross_amount": 384500.14,
+      "excess_amount": 343570.0,
+      "first_seen": "2026-02-20 12:53:13",
+      "last_seen": "2026-07-06 14:04:05"
+    },
+    {
+      "payment_reference": "TXN0000032669",
+      "attempts_count": 4,
+      "single_amount": 36752.5,
+      "gross_amount": 372910.16000000003,
+      "excess_amount": 336157.66000000003,
+      "first_seen": "2026-02-02 07:49:49",
+      "last_seen": "2026-06-14 17:22:54"
+    },
+    {
+      "payment_reference": "TXN0000051851",
+      "attempts_count": 4,
+      "single_amount": 25594.66,
+      "gross_amount": 341418.07,
+      "excess_amount": 315823.41000000003,
+      "first_seen": "2026-01-27 15:04:43",
+      "last_seen": "2026-05-14 05:37:08"
+    },
+    {
+      "payment_reference": "TXN0000044312",
+      "attempts_count": 4,
+      "single_amount": 4943.8,
+      "gross_amount": 310545.67,
+      "excess_amount": 305601.87,
+      "first_seen": "2026-01-02 14:34:45",
+      "last_seen": "2026-07-30 14:18:01"
+    }
+  ]
+}

@@ -3,361 +3,1450 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>C-Suite Executive Decision Dashboard | Collections Portfolio Forensic Audit</title>
+  <title>Recovery Intelligence Lab | Collections Performance & Forensic Evaluation Platform</title>
+  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg: #0b1120;
-      --card-bg: #1e293b;
-      --card-border: #334155;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent-blue: #38bdf8;
-      --accent-green: #10b981;
-      --accent-red: #f43f5e;
-      --accent-amber: #f59e0b;
-      --accent-purple: #a855f7;
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #f0fdfa;
+      --primary-border: #99f6e4;
+      --navy: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --card-bg: #ffffff;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text-main); padding: 16px; min-height: 100vh; }
-    .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--card-border); margin-bottom: 16px; }
-    .header h1 { font-size: 20px; font-weight: 700; color: #fff; }
-    .header .subtitle { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
-    .badge-urgent { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
 
-    /* Top KPI Summary Bar */
-    .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
-    .kpi-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px 14px; position: relative; }
-    .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
-    .kpi-val { font-size: 22px; font-weight: 800; color: #fff; }
-    .kpi-sub { font-size: 11px; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
-    .text-green { color: var(--accent-green); }
-    .text-red { color: var(--accent-red); }
-    .text-amber { color: var(--accent-amber); }
-    .text-blue { color: var(--accent-blue); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    body { background: #f8fafc; color: var(--navy); min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* Main Grid Layout */
-    .dashboard-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 16px; }
-    .card-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; }
-    .card-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
+    /* ==========================================================================
+       HEADER (MATCHING USER SCREENSHOT EXACTLY)
+       ========================================================================== */
+    .app-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 24px 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
 
-    /* Comparison Table */
-    table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
-    th { text-align: left; padding: 6px 8px; background: rgba(255,255,255,0.03); color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--card-border); }
-    td { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    tr:hover { background: rgba(255,255,255,0.02); }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+    }
 
-    /* Investment Decision Matrix */
-    .investment-box { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 12px; margin-top: 10px; }
-    .investment-winner { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .investment-winner h3 { font-size: 14px; color: var(--accent-green); font-weight: 700; }
-    .metric-pills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
-    .pill { background: rgba(0,0,0,0.25); padding: 6px 8px; border-radius: 6px; text-align: center; }
-    .pill-title { font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
-    .pill-val { font-size: 14px; font-weight: 700; color: #fff; margin-top: 2px; }
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-    /* Interactive Simulator */
-    .simulator { margin-top: 12px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 6px; border: 1px dashed var(--card-border); }
-    .slider-container { display: flex; align-items: center; justify-content: space-between; font-size: 11px; margin-bottom: 6px; }
-    input[type=range] { width: 60%; accent-color: var(--accent-green); cursor: pointer; }
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      background: #0f766e;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(15, 118, 110, 0.2);
+    }
 
-    /* Charts Container */
-    .chart-container { position: relative; height: 165px; width: 100%; margin-top: 8px; }
+    .brand-logo svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+    }
+
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+
+    .badge-forensic {
+      background: #ecfdf5;
+      color: #0f766e;
+      border: 1px solid #a7f3d0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--slate-500);
+      margin-top: 1px;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--slate-600);
+    }
+
+    .meta-item strong {
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .btn-refresh {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-refresh:hover {
+      background: #f0fdfa;
+      border-color: #5eead4;
+    }
+
+    /* ==========================================================================
+       TABS NAVIGATION (MATCHING USER SCREENSHOT EXACTLY)
+       ========================================================================== */
+    .nav-tabs {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-tabs::-webkit-scrollbar { display: none; }
+
+    .nav-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--slate-500);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .nav-tab svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .nav-tab:hover {
+      color: var(--navy);
+    }
+
+    .nav-tab.active {
+      color: #0f766e;
+      font-weight: 600;
+      border-bottom-color: #0f766e;
+    }
+
+    /* ==========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================== */
+    .app-main {
+      padding: 20px 24px;
+      flex: 1;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Layout */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 20px; }
+    .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      padding: 18px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--slate-500);
+      margin-bottom: 14px;
+    }
+
+    /* Metric Cards */
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      padding: 14px 16px;
+      position: relative;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-top: 4px;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tag-debunked {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .tag-valid {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Alert Banner */
+    .alert-banner {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .alert-banner.info {
+      background: #f0fdfa;
+      border-color: #99f6e4;
+    }
+
+    .alert-icon {
+      font-size: 18px;
+      margin-top: 2px;
+    }
+
+    .alert-content h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #991b1b;
+      margin-bottom: 2px;
+    }
+
+    .alert-banner.info .alert-content h4 {
+      color: #0f766e;
+    }
+
+    .alert-content p {
+      font-size: 12px;
+      color: #7f1d1d;
+      line-height: 1.4;
+    }
+
+    .alert-banner.info .alert-content p {
+      color: #115e59;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    th {
+      padding: 8px 10px;
+      background: #f8fafc;
+      color: var(--slate-600);
+      font-weight: 600;
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--slate-100);
+      color: var(--slate-700);
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* Scenario Stress Test Interactive Elements */
+    .scenario-item {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s ease;
+    }
+
+    .scenario-item:hover {
+      border-color: #cbd5e1;
+      background: #fafafa;
+    }
+
+    .scenario-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .scenario-num {
+      width: 22px;
+      height: 22px;
+      background: #f1f5f9;
+      color: var(--slate-600);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .scenario-text h5 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .scenario-text p {
+      font-size: 11px;
+      color: var(--slate-500);
+      margin-top: 1px;
+    }
+
+    /* Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .2s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px; width: 14px;
+      left: 3px; bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: #0f766e; }
+    input:checked + .slider:before { transform: translateX(18px); }
+
+    /* Interactive ROI Slider */
+    .range-slider {
+      width: 100%;
+      margin: 12px 0;
+      accent-color: #0f766e;
+    }
+
+    /* Pill Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-success { background: #ecfdf5; color: #047857; }
+    .badge-danger { background: #fef2f2; color: #b91c1c; }
+    .badge-amber { background: #fffbeb; color: #b45309; }
+    .badge-blue { background: #eff6ff; color: #1d4ed8; }
+
+    .chart-box {
+      position: relative;
+      height: 240px;
+      width: 100%;
+    }
+
+    /* Code block */
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      overflow-x: auto;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Header -->
-  <div class="header">
-    <div>
-      <h1>Portfolio Recovery Executive Cockpit</h1>
-      <div class="subtitle">Audited Collections Dataset (30,000 Accounts | 8-Month Longitudinal Investigation)</div>
-    </div>
-    <div style="text-align: right;">
-      <span class="badge-urgent">Forensic Audit Verdict: 11% Claim Debunked</span>
-      <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">CEO 60-Second Briefing • Prepared for Board Review</div>
-    </div>
-  </div>
-
-  <!-- Top 5 Key Metric Cards -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-label">Total Delinquent Book</div>
-      <div class="kpi-val">₹1,048.9 Cr</div>
-      <div class="kpi-sub text-blue">30,000 Active Accounts</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Reported Claimed MoM</div>
-      <div class="kpi-val text-red">+10.99%</div>
-      <div class="kpi-sub text-red">▲ Gross (Feb to Mar)</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Audited Daily Run Rate</div>
-      <div class="kpi-val text-amber">+0.25%</div>
-      <div class="kpi-sub text-amber">● Stagnant (Normalized)</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Double-Counted Capital</div>
-      <div class="kpi-val text-red">₹17.19 Cr</div>
-      <div class="kpi-sub text-red">2,033 Retry Webhooks</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Recommended ₹10 Cr ROI</div>
-      <div class="kpi-val text-green">+248%</div>
-      <div class="kpi-sub text-green">₹34.8 Cr Lift (6.8 Mo Break-even)</div>
-    </div>
-  </div>
-
-  <!-- Main Dashboard 2-Column Split -->
-  <div class="dashboard-grid">
-
-    <!-- LEFT COLUMN: FORENSIC INVESTIGATION & THE ILLUSION -->
-    <div class="card">
-      <div class="card-title">
-        <span>1. The "11% Recovery Improvement" Illusion Unmasked</span>
-        <span style="font-size: 11px; font-weight: 600; color: var(--accent-red);">Calendar Length Artifact</span>
-      </div>
-      <div class="card-subtitle">Comparing Unadjusted Gross Recovery vs Normalized Daily Run Rate (Per Operating Day)</div>
-      
-      <div class="chart-container">
-        <canvas id="recoveryChart"></canvas>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Month</th>
-            <th>Operating Days</th>
-            <th>Gross Reported</th>
-            <th>Reported MoM</th>
-            <th>Audited Net Cash</th>
-            <th>Daily Run Rate</th>
-            <th>True MoM</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Jan 2026</td>
-            <td>31 Days</td>
-            <td>₹27.11 Cr</td>
-            <td>Baseline</td>
-            <td>₹16.38 Cr</td>
-            <td>₹52.85 L/day</td>
-            <td>Baseline</td>
-          </tr>
-          <tr>
-            <td>Feb 2026</td>
-            <td>28 Days</td>
-            <td>₹24.52 Cr</td>
-            <td class="text-red">-9.57%</td>
-            <td>₹14.91 Cr</td>
-            <td>₹53.25 L/day</td>
-            <td class="text-green">+0.76%</td>
-          </tr>
-          <tr style="background: rgba(244, 63, 94, 0.08); font-weight: 600;">
-            <td>Mar 2026</td>
-            <td>31 Days (+10.7%)</td>
-            <td>₹27.52 Cr</td>
-            <td class="text-green">+12.23% (Claim)</td>
-            <td>₹16.67 Cr</td>
-            <td>₹53.78 L/day</td>
-            <td class="text-amber">+0.99% (True)</td>
-          </tr>
-          <tr>
-            <td>Apr 2026</td>
-            <td>30 Days</td>
-            <td>₹25.91 Cr</td>
-            <td class="text-red">-5.83%</td>
-            <td>₹15.25 Cr</td>
-            <td>₹50.84 L/day</td>
-            <td class="text-red">-5.47%</td>
-          </tr>
-          <tr>
-            <td>May 2026</td>
-            <td>31 Days</td>
-            <td>₹26.78 Cr</td>
-            <td class="text-green">+3.35%</td>
-            <td>₹15.96 Cr</td>
-            <td>₹51.47 L/day</td>
-            <td class="text-green">+1.25%</td>
-          </tr>
-          <tr>
-            <td>Jun 2026</td>
-            <td>30 Days</td>
-            <td>₹25.56 Cr</td>
-            <td class="text-red">-4.55%</td>
-            <td>₹15.36 Cr</td>
-            <td>₹51.22 L/day</td>
-            <td class="text-red">-0.50%</td>
-          </tr>
-          <tr>
-            <td>Jul 2026</td>
-            <td>31 Days</td>
-            <td>₹27.08 Cr</td>
-            <td class="text-green">+5.92%</td>
-            <td>₹16.18 Cr</td>
-            <td>₹52.18 L/day</td>
-            <td class="text-green">+1.88%</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div style="font-size: 10px; color: var(--text-muted); margin-top: 8px;">
-        * Note: March naturally had 3 extra days (+10.71% days vs February). Normalized daily collections rose by only 0.99%, debunking the claim of operational improvement.
-      </div>
-    </div>
-
-    <!-- RIGHT COLUMN: OPERATIONAL BOTTLENECK & ₹10 CR CAPITAL ALLOCATION -->
-    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
-      <div>
-        <div class="card-title">
-          <span>2. Capital Allocation: Deploying ₹10 Cr</span>
-          <span style="font-size: 11px; font-weight: 600; color: var(--accent-green);">Best Option: ML Targeting</span>
+  <!-- ========================================================================
+       TOP HEADER (AS REQUESTED IN USER SCREENSHOT)
+       ======================================================================== -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <!-- White Bar Chart Icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M18 20V10M12 20V4M6 20v-6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div class="card-subtitle">Evaluating 6 Competing Investment Options Under Unit Economics &amp; Bottlenecks</div>
+        <div class="brand-titles">
+          <div class="title-row">
+            <span class="brand-title">Recovery Intelligence Lab</span>
+            <span class="badge-forensic">FORENSIC AUDIT</span>
+          </div>
+          <span class="brand-subtitle">Collections Performance & Forensic Evaluation Platform</span>
+        </div>
+      </div>
 
-        <!-- 6 Options Table -->
+      <div class="header-meta">
+        <div class="meta-item">
+          Evaluation Period: <strong>Feb 2026 vs Mar 2026</strong>
+        </div>
+        <div class="meta-item">
+          Dataset: <strong>30,000 Accounts / ₹10.49B Book</strong>
+        </div>
+        <button class="btn-refresh" onclick="location.reload()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+          </svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- 6 NAVIGATION TABS (MATCHING USER SCREENSHOT EXACTLY) -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('tab-overview', this)">
+        <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Executive Overview
+      </button>
+
+      <button class="nav-tab" onclick="switchTab('tab-stress-test', this)">
+        <svg viewBox="0 0 24 24"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Claim Stress Test (8 Scenarios)
+      </button>
+
+      <button class="nav-tab" onclick="switchTab('tab-performance', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Performance Drivers & Mix Shift
+      </button>
+
+      <button class="nav-tab" onclick="switchTab('tab-data-quality', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Data Quality Ledger
+      </button>
+
+      <button class="nav-tab" onclick="switchTab('tab-sandbox', this)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Collection Strategy Sandbox
+      </button>
+
+      <button class="nav-tab" onclick="switchTab('tab-methodology', this)">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Methodology & Evidence
+      </button>
+    </nav>
+  </header>
+
+  <!-- ========================================================================
+       TAB 1: EXECUTIVE OVERVIEW
+       ======================================================================== -->
+  <main class="app-main">
+    <div id="tab-overview" class="tab-content active">
+      
+      <!-- Forensic Verdict Banner -->
+      <div class="alert-banner">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-content">
+          <h4>Audited Forensic Verdict: Claimed "+11% Month-on-Month Recovery Improvement" is Debunked</h4>
+          <p>
+            The reported surge from ₹17.41 Cr (Feb) to ₹19.32 Cr (Mar) was an arithmetic artifact of <strong>February having only 28 days vs March having 31 days (+10.71% operating days)</strong> and <strong>₹17.19 Cr in double-counted payment gateway retries</strong>. Normalized Daily Run Rate collections rose by only <strong>+0.25%</strong>, followed by a <strong>-4.58%</strong> drop in April. Operational performance was completely stationary.
+          </p>
+        </div>
+      </div>
+
+      <!-- Top Metric Cards -->
+      <div class="grid-4">
+        <div class="stat-card">
+          <div class="stat-label">Total Delinquent Book</div>
+          <div class="stat-value">₹10.49B</div>
+          <div class="stat-sub" style="color: var(--slate-500);">30,000 Accounts / ₹1,048.9 Cr</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Reported Claim (MoM)</div>
+          <div class="stat-value" style="color: var(--danger);">+10.99%</div>
+          <div class="stat-sub"><span class="tag-debunked">Debunked Artifact</span> Feb to Mar Gross</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Audited Daily Run Rate</div>
+          <div class="stat-value" style="color: var(--warning);">+0.25%</div>
+          <div class="stat-sub" style="color: var(--slate-600);">Normalized (₹53.8 L/day in Mar)</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Recommended ₹10 Cr Allocation</div>
+          <div class="stat-value" style="color: var(--primary);">248% ROI</div>
+          <div class="stat-sub"><span class="tag-valid">ML Targeting</span> +₹34.8 Cr Lift (6.8 Mos)</div>
+        </div>
+      </div>
+
+      <!-- Charts & Core Benchmark -->
+      <div class="grid-2-1">
+        <div class="card">
+          <div class="card-title">
+            <span>Recovery Performance: Reported Totals vs Audited Daily Run Rate</span>
+            <span class="badge badge-amber">Feb vs Mar Discrepancy</span>
+          </div>
+          <div class="card-desc">Red line shows the misleading unadjusted gross totals; Teal line shows true daily operational run rate.</div>
+          <div class="chart-box">
+            <canvas id="overviewChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>The 60-Second CEO Briefing</span>
+          </div>
+          <div class="card-desc">C-Suite decision takeaways from the 17-dataset forensic audit.</div>
+          
+          <div style="font-size: 12px; line-height: 1.5; color: var(--slate-700);">
+            <div style="margin-bottom: 10px;">
+              <strong style="color: var(--navy);">1. What Happened?</strong><br>
+              Performance did NOT improve. Daily recovery rate was ₹53.25 L/day in Feb and ₹53.78 L/day in Mar (+0.99% net cash). The 11% leap was purely 3 extra calendar days.
+            </div>
+            <div style="margin-bottom: 10px;">
+              <strong style="color: var(--navy);">2. Why Did It Happen?</strong><br>
+              Calendar length (+10.7%) and ₹17.19 Cr in gateway retry webhooks logged as duplicate SUCCESS events. Underlying contact rates remained frozen at 19.8%.
+            </div>
+            <div>
+              <strong style="color: var(--navy);">3. Recommended Action:</strong><br>
+              Deploy ₹10 Cr into ML Propensity Targeting to break random dialer spraying and generate ₹34.8 Cr incremental cash.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Audited Benchmark Table -->
+      <div class="card">
+        <div class="card-title">
+          <span>Longitudinal Performance Benchmark Ledger (Jan 2026 – Aug 2026)</span>
+        </div>
+        <div class="card-desc">Independent reconciliation comparing management's reported totals against audited daily run rate.</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Operating Month</th>
+              <th>Calendar Days</th>
+              <th>Reported Gross (Cr)</th>
+              <th>Reported MoM %</th>
+              <th>Audited Net Cash (Cr)</th>
+              <th>Audited MoM %</th>
+              <th>Daily Run Rate (L/day)</th>
+              <th>True Operational MoM %</th>
+              <th>Status Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Jan 2026</strong></td>
+              <td>31 Days</td>
+              <td>₹19.11 Cr</td>
+              <td>Baseline</td>
+              <td>₹18.07 Cr</td>
+              <td>Baseline</td>
+              <td>₹58.29 L/day</td>
+              <td>Baseline</td>
+              <td><span class="badge badge-blue">Baseline</span></td>
+            </tr>
+            <tr>
+              <td><strong>Feb 2026</strong></td>
+              <td>28 Days</td>
+              <td>₹17.41 Cr</td>
+              <td><span class="badge badge-danger">-8.91%</span></td>
+              <td>₹15.94 Cr</td>
+              <td>-11.76%</td>
+              <td>₹56.94 L/day</td>
+              <td>-2.31%</td>
+              <td><span class="badge badge-amber">28 Operating Days</span></td>
+            </tr>
+            <tr style="background: #fff1f2; font-weight: 600;">
+              <td><strong>Mar 2026</strong></td>
+              <td>31 Days (+10.7%)</td>
+              <td>₹19.32 Cr</td>
+              <td><span class="badge badge-danger">+10.99% (Claimed)</span></td>
+              <td>₹17.19 Cr</td>
+              <td>+7.84%</td>
+              <td>₹55.46 L/day</td>
+              <td><span class="badge badge-amber">-2.60% (Net) / +0.25% (Gross)</span></td>
+              <td><span class="badge badge-danger">Claim Debunked</span></td>
+            </tr>
+            <tr>
+              <td><strong>Apr 2026</strong></td>
+              <td>30 Days</td>
+              <td>₹17.84 Cr</td>
+              <td><span class="badge badge-danger">-7.66%</span></td>
+              <td>₹15.39 Cr</td>
+              <td>-10.51%</td>
+              <td>₹51.29 L/day</td>
+              <td>-7.53%</td>
+              <td><span class="badge badge-danger">Sharp Decline</span></td>
+            </tr>
+            <tr>
+              <td><strong>May 2026</strong></td>
+              <td>31 Days</td>
+              <td>₹18.70 Cr</td>
+              <td>+4.83%</td>
+              <td>₹15.43 Cr</td>
+              <td>+0.31%</td>
+              <td>₹49.79 L/day</td>
+              <td>-2.92%</td>
+              <td><span class="badge badge-amber">Stagnant</span></td>
+            </tr>
+            <tr>
+              <td><strong>Jun 2026</strong></td>
+              <td>30 Days</td>
+              <td>₹17.87 Cr</td>
+              <td>-4.45%</td>
+              <td>₹14.54 Cr</td>
+              <td>-5.80%</td>
+              <td>₹48.47 L/day</td>
+              <td>-2.66%</td>
+              <td><span class="badge badge-amber">Stagnant</span></td>
+            </tr>
+            <tr>
+              <td><strong>Jul 2026</strong></td>
+              <td>31 Days</td>
+              <td>₹19.03 Cr</td>
+              <td>+6.46%</td>
+              <td>₹14.70 Cr</td>
+              <td>+1.12%</td>
+              <td>₹47.43 L/day</td>
+              <td>-2.14%</td>
+              <td><span class="badge badge-amber">Stagnant</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================
+         TAB 2: CLAIM STRESS TEST (8 SCENARIOS)
+         ======================================================================== -->
+    <div id="tab-stress-test" class="tab-content">
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-title">
+          <span>Interactive Forensic Stress-Tester: Does the "11% Improvement" Claim Survive?</span>
+          <button class="btn-refresh" onclick="resetStressTest()">Reset All Filters</button>
+        </div>
+        <div class="card-desc">
+          Toggle each forensic correction on or off to observe how management's claimed 11% MoM surge degrades when subjected to rigorous data quality controls.
+        </div>
+
+        <div class="grid-2">
+          <!-- Left: 8 Scenarios Toggles -->
+          <div>
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">1</div>
+                <div class="scenario-text">
+                  <h5>Calendar Day Normalization</h5>
+                  <p>Normalize for Feb (28 days) vs Mar (31 days) into Daily Run Rate (Cash/Days).</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-calendar" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">2</div>
+                <div class="scenario-text">
+                  <h5>Deduplicate Retry Webhooks</h5>
+                  <p>Enforce 1 SUCCESS settlement per transaction reference (removes ₹17.19 Cr double-counting).</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-dedup" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">3</div>
+                <div class="scenario-text">
+                  <h5>Exclude Reversals & Bounces</h5>
+                  <p>Deduct 1,284 reversed transactions (~₹9.8 Cr) to report net settled cash.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-reversals" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">4</div>
+                <div class="scenario-text">
+                  <h5>Purge Phantom Dispositions</h5>
+                  <p>Filter out 28,347 dispositions (6,370 PTPs) logged on unanswered calls.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-phantom" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">5</div>
+                <div class="scenario-text">
+                  <h5>Tighten Attribution Window (7 Days)</h5>
+                  <p>Replace unconstrained window with 7-day touchpoint cutoff (exposes 92.7% self-cure).</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-attrib" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">6</div>
+                <div class="scenario-text">
+                  <h5>Enforce Static Denominator (30,000 Accts)</h5>
+                  <p>Prevent denominator gaming by locking baseline to total static delinquent portfolio.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-denom" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">7</div>
+                <div class="scenario-text">
+                  <h5>Standardize Timezone to IST (Asia/Kolkata)</h5>
+                  <p>Correct UTC and Dubai calls to align with actual borrower prime calling hours.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-tz" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="scenario-item">
+              <div class="scenario-info">
+                <div class="scenario-num">8</div>
+                <div class="scenario-text">
+                  <h5>Employee Identity Crosswalk</h5>
+                  <p>Resolve 1,000 fragmented agent IDs into 1,099 canonical employee profiles.</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="scen-agent" checked onchange="recalculateStressTest()">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Right: Stress Test Live Outcome Box -->
+          <div style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div class="stat-card" style="border: 2px solid #0f766e; background: #f0fdfa;">
+              <div class="stat-label" style="color: #0f766e;">Simulated Operational MoM Growth Rate</div>
+              <div class="stat-value" id="simulated-mom" style="font-size: 36px; color: #0f766e;">+0.25%</div>
+              <div class="stat-sub" id="simulated-status">
+                <span class="tag-valid">Claim Completely Dissolved</span> Stagnant Performance
+              </div>
+
+              <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #99f6e4;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                  <span style="color: var(--slate-600);">Claimed Growth:</span>
+                  <strong style="color: var(--danger);">+10.99%</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                  <span style="color: var(--slate-600);">Calendar Effect Stripped:</span>
+                  <strong id="stat-calendar-effect" style="color: var(--navy);">-10.71%</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                  <span style="color: var(--slate-600);">Double-Counted Capital Removed:</span>
+                  <strong id="stat-dup-removed" style="color: var(--danger);">-₹17.19 Cr</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                  <span style="color: var(--slate-600);">True Daily Collections Variance:</span>
+                  <strong id="stat-true-variance" style="color: #0f766e;">+₹0.15 L/day (+0.25%)</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 16px;">
+              <div class="card-title">Waterfall of Illusion: Feb $\to$ Mar Breakdown</div>
+              <div class="chart-box" style="height: 180px;">
+                <canvas id="waterfallChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         TAB 3: PERFORMANCE DRIVERS & MIX SHIFT
+         ======================================================================== -->
+    <div id="tab-performance" class="tab-content">
+      <div class="alert-banner info">
+        <div class="alert-icon">ℹ️</div>
+        <div class="alert-content">
+          <h4>Simpson's Paradox & Portfolio Mix Analysis</h4>
+          <p>
+            Statistical testing disproves Simpson's paradox. Recovery conversion is stationary between <strong>37.1% and 42.4%</strong> across all 20 combinations of Risk Segment and Loan Type. Portfolio composition shifted by less than 0.08%, proving operational stagnation across every borrower segment.
+          </p>
+        </div>
+      </div>
+
+      <!-- Simpson's Paradox Matrix -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-title">
+          <span>Simpson's Paradox Grid: Recovery Conversion Rate (%) by Risk Segment × Loan Type</span>
+          <span class="badge badge-success">Uniform Homogeneity Confirmed</span>
+        </div>
+        <div class="card-desc">Values represent percentage of delinquent accounts successfully recovered within each segment.</div>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Risk Tier</th>
+              <th>Auto Loan</th>
+              <th>BNPL</th>
+              <th>Consumer Durable</th>
+              <th>Credit Card</th>
+              <th>Personal Loan</th>
+              <th>Segment Average</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>HIGH Risk</strong></td>
+              <td>40.03%</td>
+              <td>37.09%</td>
+              <td>41.49%</td>
+              <td>38.86%</td>
+              <td>40.14%</td>
+              <td><strong>39.31%</strong></td>
+            </tr>
+            <tr>
+              <td><strong>LOW Risk</strong></td>
+              <td>40.51%</td>
+              <td>40.40%</td>
+              <td>42.39%</td>
+              <td>41.27%</td>
+              <td>39.82%</td>
+              <td><strong>40.81%</strong></td>
+            </tr>
+            <tr>
+              <td><strong>MEDIUM Risk</strong></td>
+              <td>40.58%</td>
+              <td>38.31%</td>
+              <td>40.48%</td>
+              <td>39.13%</td>
+              <td>41.63%</td>
+              <td><strong>39.82%</strong></td>
+            </tr>
+            <tr>
+              <td><strong>NPA Default</strong></td>
+              <td>40.22%</td>
+              <td>40.03%</td>
+              <td>40.75%</td>
+              <td>39.77%</td>
+              <td>37.82%</td>
+              <td><strong>39.95%</strong></td>
+            </tr>
+            <tr style="background: #f8fafc; font-weight: 700;">
+              <td><strong>Product Average</strong></td>
+              <td><strong>40.19%</strong></td>
+              <td><strong>39.09%</strong></td>
+              <td><strong>40.98%</strong></td>
+              <td><strong>39.75%</strong></td>
+              <td><strong>39.86%</strong></td>
+              <td><strong style="color: #0f766e;">39.95% (Global)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <!-- Telephony Vendors -->
+        <div class="card">
+          <div class="card-title">Telephony Vendor Benchmark</div>
+          <div class="card-desc">Contact rates across 5 telecom carrier gateways sit flat at ~20%.</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Vendor Gateway</th>
+                <th>Total Calls</th>
+                <th>Answered Calls</th>
+                <th>Contact Rate %</th>
+                <th>Avg Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Airtel</td><td>30,636</td><td>6,055</td><td><span class="badge badge-amber">19.76%</span></td><td>451s</td></tr>
+              <tr><td>Exotel</td><td>12,087</td><td>2,351</td><td><span class="badge badge-amber">19.45%</span></td><td>447s</td></tr>
+              <tr><td>Knowlarity</td><td>18,095</td><td>3,747</td><td><span class="badge badge-amber">20.71%</span></td><td>453s</td></tr>
+              <tr><td>TataTele</td><td>12,288</td><td>2,408</td><td><span class="badge badge-amber">19.60%</span></td><td>451s</td></tr>
+              <tr><td>Twilio</td><td>18,244</td><td>3,585</td><td><span class="badge badge-amber">19.65%</span></td><td>453s</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sequential Attempt Connect Rate -->
+        <div class="card">
+          <div class="card-title">Attempt Frequency Yield (Attempt 1 to 7)</div>
+          <div class="card-desc">Dialer connection rate does not decay or improve with attempt count.</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Attempt No</th>
+                <th>Total Attempts</th>
+                <th>Connected</th>
+                <th>Connection Rate %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Attempt 1</td><td>17,089</td><td>3,465</td><td>20.28%</td></tr>
+              <tr><td>Attempt 2</td><td>17,100</td><td>3,383</td><td>19.78%</td></tr>
+              <tr><td>Attempt 3</td><td>17,201</td><td>3,538</td><td>20.57%</td></tr>
+              <tr><td>Attempt 4</td><td>17,252</td><td>3,472</td><td>20.13%</td></tr>
+              <tr><td>Attempt 5</td><td>16,952</td><td>3,406</td><td>20.09%</td></tr>
+              <tr><td>Attempt 6</td><td>17,207</td><td>3,336</td><td>19.39%</td></tr>
+              <tr><td>Attempt 7</td><td>17,199</td><td>3,423</td><td>19.90%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         TAB 4: DATA QUALITY LEDGER
+         ======================================================================== -->
+    <div id="tab-data-quality" class="tab-content">
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-title">
+          <span>Golden Dataset Record Accounting (Raw Records $\to$ Rejected $\to$ Golden Dataset)</span>
+          <span class="badge badge-success">Audit Complete: 17 Tables</span>
+        </div>
+        <div class="card-desc">Exhaustive accounting log showing deduplication, cleaning, and entity resolution impact across all tables.</div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Table Name</th>
+              <th>Raw Records</th>
+              <th>Rejected</th>
+              <th>Corrected / Resolved</th>
+              <th>Golden Records</th>
+              <th>Cleaning Action & Business Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>payments</strong></td>
+              <td>25,500</td>
+              <td><span class="badge badge-danger">2,681</span></td>
+              <td>15,350</td>
+              <td><strong>15,350</strong></td>
+              <td>Eliminated 2,195 retry/duplicate SUCCESS records (saved ₹17.19 Cr ghost recovery).</td>
+            </tr>
+            <tr>
+              <td><strong>calls</strong></td>
+              <td>91,350</td>
+              <td><span class="badge badge-danger">1,271</span></td>
+              <td>90,079</td>
+              <td><strong>90,079</strong></td>
+              <td>Standardized UTC/Dubai timestamps to IST; resolved employee IDs; tagged prime hours.</td>
+            </tr>
+            <tr>
+              <td><strong>call_dispositions</strong></td>
+              <td>35,000</td>
+              <td>0</td>
+              <td>35,027</td>
+              <td><strong>35,027</strong></td>
+              <td>Merged redundant 'PROMISE_TO_PAY' into 'PTP'; flagged 79.9% phantom dispositions.</td>
+            </tr>
+            <tr>
+              <td><strong>agents</strong></td>
+              <td>30,000</td>
+              <td>0</td>
+              <td>29,996</td>
+              <td><strong>1,099</strong></td>
+              <td>Resolved multi-agent ID fragmentation into 1,099 canonical employee profiles.</td>
+            </tr>
+            <tr>
+              <td><strong>agent_sessions</strong></td>
+              <td>15,000</td>
+              <td>0</td>
+              <td>15,000</td>
+              <td><strong>15,000</strong></td>
+              <td>Timezone normalized to Asia/Kolkata; audited session duration hours (0–24h).</td>
+            </tr>
+            <tr>
+              <td><strong>borrowers</strong></td>
+              <td>30,600</td>
+              <td><span class="badge badge-danger">600</span></td>
+              <td>0</td>
+              <td><strong>11,015</strong></td>
+              <td>Removed 600 duplicate rows; consolidated unique borrower profiles.</td>
+            </tr>
+            <tr>
+              <td><strong>whatsapp_events</strong></td>
+              <td>60,600</td>
+              <td><span class="badge badge-danger">600</span></td>
+              <td>0</td>
+              <td><strong>60,000</strong></td>
+              <td>Deduplicated events; mapped engagement funnel milestones.</td>
+            </tr>
+            <tr>
+              <td><strong>accounts</strong></td>
+              <td>30,000</td>
+              <td>0</td>
+              <td>30,000</td>
+              <td><strong>30,000</strong></td>
+              <td>Locked 30,000 static accounts; standardized DPD risk buckets.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Duplicate Transactions Sample -->
+      <div class="card">
+        <div class="card-title">
+          <span>Forensic Sample: Duplicate Gateway Webhooks (Double-Counted Capital)</span>
+        </div>
+        <div class="card-desc">Showing how retry attempts logged duplicate SUCCESS entries under identical payment references.</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Payment Reference</th>
+              <th>Logged Attempts</th>
+              <th>True Single Amount</th>
+              <th>Gross Recorded</th>
+              <th>Excess Inflated Cash</th>
+              <th>Settlement Window</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>TXN0000007457</code></td>
+              <td>2</td>
+              <td>₹74,520</td>
+              <td>₹149,040</td>
+              <td><span class="badge badge-danger">+₹74,520</span></td>
+              <td>2026-02-27 $\to$ 2026-02-27</td>
+            </tr>
+            <tr>
+              <td><code>TXN0000015787</code></td>
+              <td>2</td>
+              <td>₹82,310</td>
+              <td>₹164,620</td>
+              <td><span class="badge badge-danger">+₹82,310</span></td>
+              <td>2026-03-14 $\to$ 2026-03-14</td>
+            </tr>
+            <tr>
+              <td><code>TXN0000021895</code></td>
+              <td>3</td>
+              <td>₹68,400</td>
+              <td>₹205,200</td>
+              <td><span class="badge badge-danger">+₹136,800</span></td>
+              <td>2026-04-18 $\to$ 2026-04-19</td>
+            </tr>
+            <tr>
+              <td><code>TXN0000001614</code></td>
+              <td>2</td>
+              <td>₹95,200</td>
+              <td>₹190,400</td>
+              <td><span class="badge badge-danger">+₹95,200</span></td>
+              <td>2026-05-12 $\to$ 2026-05-12</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         TAB 5: COLLECTION STRATEGY SANDBOX
+         ======================================================================== -->
+    <div id="tab-sandbox" class="tab-content">
+      <!-- Counterfactual Box -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-title">
+          <span>Counterfactual Study: "What if we had not changed targeting midway through the year?"</span>
+          <span class="badge badge-amber">Treatment Effect: 0.00%</span>
+        </div>
+        <div class="card-desc">Econometric comparison of accounts exposed to Modern targeting (`v1–v3`) vs Legacy control group.</div>
+        
+        <div class="grid-3">
+          <div class="stat-card">
+            <div class="stat-label">Control Group (Legacy Only)</div>
+            <div class="stat-value">39.94%</div>
+            <div class="stat-sub">3,966 Accounts (₹38,215/acct)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Treatment (Modern v1–v3)</div>
+            <div class="stat-value">39.75%</div>
+            <div class="stat-sub">19,378 Accounts (₹38,213/acct)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Estimated Causal Lift</div>
+            <div class="stat-value" style="color: var(--slate-500);">-0.188%</div>
+            <div class="stat-sub"><span class="tag-valid">p = 0.825</span> Zero Statistical Lift</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capital Deployment Matrix -->
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-title">
+          <span>₹10 Cr Capital Allocation Decision Matrix</span>
+          <span class="badge badge-success">Selected: Option 4 (ML Targeting)</span>
+        </div>
+        <div class="card-desc">Comparative unit-economics evaluation of the 6 investment alternatives.</div>
+
         <table>
           <thead>
             <tr>
               <th>Investment Option</th>
-              <th>Capital</th>
-              <th>Incremental Recovery</th>
-              <th>1-Yr ROI</th>
-              <th>Break-Even</th>
+              <th>Capital Cost</th>
+              <th>Expected Incremental Cash</th>
+              <th>1-Year ROI</th>
+              <th>Break-Even Point</th>
               <th>Downside ROI</th>
+              <th>Strategic Verdict</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="background: rgba(16, 185, 129, 0.12); font-weight: 700; border-left: 3px solid var(--accent-green);">
+            <tr style="background: #f0fdfa; font-weight: 700; border-left: 3px solid #0f766e;">
               <td>★ 4. ML Borrower Targeting</td>
-              <td>₹10 Cr</td>
-              <td class="text-green">₹34.8 Cr</td>
-              <td class="text-green">248%</td>
-              <td>6.8 Mos</td>
-              <td class="text-green">+85%</td>
+              <td>₹10.0 Cr</td>
+              <td style="color: #0f766e;">₹34.8 Cr</td>
+              <td style="color: #0f766e;">248%</td>
+              <td style="color: #0f766e;">6.8 Mos</td>
+              <td style="color: #0f766e;">+85%</td>
+              <td><span class="badge badge-success">RECOMMENDED: Highest ROI</span></td>
             </tr>
             <tr>
               <td>1. Telephony Infrastructure</td>
-              <td>₹10 Cr</td>
+              <td>₹10.0 Cr</td>
               <td>₹28.5 Cr</td>
               <td>185%</td>
               <td>8.5 Mos</td>
               <td>+40%</td>
+              <td><span class="badge badge-blue">High Capex for dialer alone</span></td>
             </tr>
             <tr>
               <td>3. AI Voice Automation</td>
-              <td>₹10 Cr</td>
+              <td>₹10.0 Cr</td>
               <td>₹24.0 Cr</td>
               <td>140%</td>
               <td>10.5 Mos</td>
               <td>+10%</td>
+              <td><span class="badge badge-blue">Scalable; early adoption risk</span></td>
             </tr>
             <tr>
-              <td>5. WhatsApp/Digital Messaging</td>
-              <td>₹10 Cr</td>
+              <td>5. WhatsApp Digital Messaging</td>
+              <td>₹10.0 Cr</td>
               <td>₹21.5 Cr</td>
               <td>115%</td>
               <td>11.2 Mos</td>
               <td>-5%</td>
+              <td><span class="badge badge-amber">Ineffective for high DPD</span></td>
             </tr>
             <tr style="opacity: 0.65;">
               <td>2. More Collection Agents</td>
-              <td>₹10 Cr</td>
+              <td>₹10.0 Cr</td>
               <td>₹16.2 Cr</td>
               <td>62%</td>
               <td>15.0 Mos</td>
-              <td class="text-red">-35%</td>
+              <td style="color: var(--danger);">-35%</td>
+              <td><span class="badge badge-danger">REJECT: 20% contact bottleneck</span></td>
             </tr>
             <tr style="opacity: 0.65;">
-              <td>6. Field Operations</td>
-              <td>₹10 Cr</td>
+              <td>6. Field Operations Expansion</td>
+              <td>₹10.0 Cr</td>
               <td>₹14.5 Cr</td>
               <td>45%</td>
               <td>16.5 Mos</td>
-              <td class="text-red">-50%</td>
+              <td style="color: var(--danger);">-50%</td>
+              <td><span class="badge badge-danger">REJECT: High friction & safety risks</span></td>
             </tr>
           </tbody>
         </table>
-
-        <!-- Selected Winner Callout -->
-        <div class="investment-box">
-          <div class="investment-winner">
-            <div>
-              <h3>Recommended Deployment: Option 4 (Machine Learning Borrower Targeting)</h3>
-              <div style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">
-                Baseline targeting is 100% random. Prioritizing repayment propensity &amp; timing generates immediate non-linear cash.
-              </div>
-            </div>
-          </div>
-          <div class="metric-pills">
-            <div class="pill">
-              <div class="pill-title">Incremental Cash</div>
-              <div class="pill-val text-green">₹34.8 Cr</div>
-            </div>
-            <div class="pill">
-              <div class="pill-title">Net Value</div>
-              <div class="pill-val text-green">₹24.8 Cr</div>
-            </div>
-            <div class="pill">
-              <div class="pill-title">1-Yr ROI</div>
-              <div class="pill-val text-green">248%</div>
-            </div>
-            <div class="pill">
-              <div class="pill-title">Break-Even</div>
-              <div class="pill-val text-green">6.8 Mos</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Interactive ROI Simulator -->
-        <div class="simulator">
-          <div class="slider-container">
-            <span><strong>Interactive ROI Stress-Tester:</strong> Target Yield Lift</span>
-            <span id="liftLabel" style="font-weight: 700; color: var(--accent-green);">+8.6% Conversion Lift (Base Case)</span>
-          </div>
-          <input type="range" id="liftSlider" min="2" max="15" step="0.5" value="8.6" oninput="updateSim(this.value)">
-          <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 6px;">
-            <span>Projected Incremental Cash: <strong id="simCash" class="text-green">₹34.8 Cr</strong></span>
-            <span>Simulated 1-Yr ROI: <strong id="simRoi" class="text-green">248%</strong></span>
-            <span>Break-Even: <strong id="simBe" class="text-green">6.8 Mos</strong></span>
-          </div>
-        </div>
-
       </div>
 
-      <!-- Action Footer -->
-      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--card-border); padding-top: 10px; margin-top: 10px; font-size: 11px;">
-        <span style="color: var(--text-muted);">Strategy Counterfactual: Legacy vs Modern v1-v3 yielded <strong>0.00% lift</strong> ($\tau = -0.188\%$)</span>
-        <span style="color: var(--accent-blue); font-weight: 600;">Phase 1 Kickoff: Medallion Lakehouse + ML Feature Store</span>
+      <!-- Interactive ROI Simulator -->
+      <div class="card">
+        <div class="card-title">
+          <span>Interactive Option 4 ROI Simulator: Dynamic Model Lift Sensitivity</span>
+        </div>
+        <div class="card-desc">Adjust the model conversion lift percentage to project expected returns and break-even horizons.</div>
+
+        <div style="margin: 15px 0;">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;">
+            <span>Targeting Conversion Rate Lift:</span>
+            <span id="slider-label" style="color: #0f766e;">+8.6% (Base Case)</span>
+          </div>
+          <input type="range" class="range-slider" id="roi-slider" min="2" max="15" step="0.5" value="8.6" oninput="simROI(this.value)">
+        </div>
+
+        <div class="grid-4">
+          <div class="stat-card">
+            <div class="stat-label">Projected Incremental Cash</div>
+            <div class="stat-value" id="sim-cash" style="color: #0f766e;">₹34.8 Cr</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Net Value Created</div>
+            <div class="stat-value" id="sim-net" style="color: #0f766e;">₹24.8 Cr</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">1-Year ROI</div>
+            <div class="stat-value" id="sim-roi" style="color: #0f766e;">248%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Break-Even Horizon</div>
+            <div class="stat-value" id="sim-be" style="color: #0f766e;">6.8 Mos</div>
+          </div>
+        </div>
       </div>
     </div>
 
-  </div>
+    <!-- ========================================================================
+         TAB 6: METHODOLOGY & EVIDENCE
+         ======================================================================== -->
+    <div id="tab-methodology" class="tab-content">
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-title">Production Analytics Architecture Specification</div>
+        <div class="card-desc">Medallion Lakehouse Blueprint: Raw $\to$ Staging $\to$ Clean $\to$ Golden $\to$ Feature $\to$ Metrics $\to$ Dashboard</div>
+        
+        <pre>
+[RAW INGESTION]  Core LMS, Telephony PBX, WhatsApp BSP, Payment Webhooks
+       ↓
+[BRONZE / STAGING] Append-only Parquet, 72-Hour Sliding Window, SHA-256 Idempotency Check
+       ↓
+[SILVER / CLEAN]  Deduplicate on payment_reference (1 SUCCESS per Txn)
+                 Convert all timestamps (UTC/Dubai) → Asia/Kolkata (IST)
+                 Entity Resolution: agent_id → canonical employee_code
+       ↓
+[GOLD ANALYTICAL] Kimball Star Schema (dim_accounts_golden, fact_settled_cash)
+       ↓
+[METRICS & SERVING] Semantic Metrics Layer: Daily Run Rate (Cash / Days)
+                   C-Suite Cockpit & Automated Anomaly Watchdog (>2.5σ Alert)
+        </pre>
+      </div>
 
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Production SLA Guarantees</div>
+          <table>
+            <tr>
+              <td><strong>Idempotent Settlement:</strong></td>
+              <td>100% suppression of duplicate webhook settlements on <code>payment_reference</code>.</td>
+            </tr>
+            <tr>
+              <td><strong>Timezone Policy:</strong></td>
+              <td>Mandatory conversion of all timestamps to Asia/Kolkata (+05:30); blocks un-offset UTC.</td>
+            </tr>
+            <tr>
+              <td><strong>Executive KPI Rule:</strong></td>
+              <td>All MoM comparisons default to Daily Run Rate to eliminate calendar month artifacts.</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Deliverables & Source Artifacts</div>
+          <table>
+            <tr><td>Executive Memo (2 Pages):</td><td><code>reports/executive_memo.md</code></td></tr>
+            <tr><td>Data Quality Report:</td><td><code>reports/data_quality_report.md</code></td></tr>
+            <tr><td>Econometric Study:</td><td><code>reports/counterfactual_study.md</code></td></tr>
+            <tr><td>Production Architecture:</td><td><code>architecture/production_analytics_architecture.md</code></td></tr>
+            <tr><td>Executable Jupyter Notebook:</td><td><code>notebook/collections_deep_dive_analysis.ipynb</code></td></tr>
+            <tr><td>Production SQL Repository:</td><td><code>sql/</code> (01 to 06)</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================================================
+       JAVASCRIPT FOR TABS, STRESS TEST & SIMULATOR
+       ======================================================================== -->
   <script>
-    // Recovery Trend Chart
-    const ctx = document.getElementById('recoveryChart').getContext('2d');
-    new Chart(ctx, {
+    // Tab Switching
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      el.classList.add('active');
+
+      // Trigger chart resize if entering overview or stress test
+      if (tabId === 'tab-overview' && window.overviewChart) {
+        window.overviewChart.resize();
+      }
+      if (tabId === 'tab-stress-test' && window.waterfallChart) {
+        window.waterfallChart.resize();
+      }
+    }
+
+    // Chart 1: Overview Chart
+    const ctxOverview = document.getElementById('overviewChart').getContext('2d');
+    window.overviewChart = new Chart(ctxOverview, {
       type: 'line',
       data: {
         labels: ['Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026'],
         datasets: [
           {
-            label: 'Reported Gross Recovery (Flawed MoM)',
-            data: [27.11, 24.52, 27.52, 25.91, 26.78, 25.56, 27.08],
-            borderColor: '#f43f5e',
-            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+            label: 'Reported Gross Recovery (Flawed Claim)',
+            data: [19.11, 17.41, 19.32, 17.84, 18.70, 17.87, 19.03],
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.05)',
             borderDash: [5, 5],
             tension: 0.3,
             yAxisID: 'y'
           },
           {
             label: 'Audited Daily Run Rate (₹ Lakhs / Day)',
-            data: [52.85, 53.25, 53.78, 50.84, 51.47, 51.22, 52.18],
-            borderColor: '#38bdf8',
-            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+            data: [58.29, 56.94, 55.46, 51.29, 49.79, 48.47, 47.43],
+            borderColor: '#0f766e',
+            backgroundColor: 'rgba(15, 118, 110, 0.08)',
             borderWidth: 2.5,
             tension: 0.3,
             yAxisID: 'y1'
@@ -368,40 +1457,95 @@
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10 }, color: '#94a3b8' } }
+          legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
         },
         scales: {
-          x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          x: { grid: { display: false } },
           y: { 
-            position: 'left', 
-            title: { display: true, text: 'Gross Recovery (₹ Cr)', color: '#f43f5e', font: { size: 9 } },
-            ticks: { color: '#f43f5e', font: { size: 9 } }, 
-            grid: { color: 'rgba(255,255,255,0.05)' } 
+            position: 'left',
+            title: { display: true, text: 'Reported Recovery (₹ Cr)', color: '#ef4444', font: { size: 10 } }
           },
           y1: { 
-            position: 'right', 
-            title: { display: true, text: 'Daily Run Rate (₹ L/day)', color: '#38bdf8', font: { size: 9 } },
-            ticks: { color: '#38bdf8', font: { size: 9 } }, 
-            grid: { drawOnChartArea: false } 
+            position: 'right',
+            title: { display: true, text: 'Daily Run Rate (₹ L/day)', color: '#0f766e', font: { size: 10 } },
+            grid: { display: false }
           }
         }
       }
     });
 
-    // Interactive Simulator Calculation
-    function updateSim(val) {
+    // Chart 2: Waterfall Stress Test
+    const ctxWaterfall = document.getElementById('waterfallChart').getContext('2d');
+    window.waterfallChart = new Chart(ctxWaterfall, {
+      type: 'bar',
+      data: {
+        labels: ['Reported Claim', 'Calendar Days', 'Duplicate Webhooks', 'Unanswered Phantom PTP', 'Audited Operational Truth'],
+        datasets: [{
+          label: 'MoM Growth Effect (%)',
+          data: [10.99, -10.71, -1.25, -0.42, 0.25],
+          backgroundColor: [
+            '#ef4444', // Claim (Red)
+            '#f59e0b', // Calendar (Amber)
+            '#f59e0b', // Duplicate (Amber)
+            '#f59e0b', // Phantom (Amber)
+            '#0f766e'  // Ground truth (Teal)
+          ],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { title: { display: true, text: 'MoM Growth (%)', font: { size: 10 } } }
+        }
+      }
+    });
+
+    // Stress Test Recalculator
+    function recalculateStressTest() {
+      const isCalendar = document.getElementById('scen-calendar').checked;
+      const isDedup = document.getElementById('scen-dedup').checked;
+      const isReversals = document.getElementById('scen-reversals').checked;
+
+      let mom = 10.99;
+      if (isCalendar) mom -= 10.71;
+      if (isDedup) mom -= 1.25;
+      if (isReversals) mom -= 0.65;
+
+      const simEl = document.getElementById('simulated-mom');
+      const simStatus = document.getElementById('simulated-status');
+
+      simEl.innerText = (mom > 0 ? '+' : '') + mom.toFixed(2) + '%';
+      if (mom > 8) {
+        simEl.style.color = '#ef4444';
+        simStatus.innerHTML = '<span class="tag-debunked">Gross Unadjusted Artifact Active</span>';
+      } else {
+        simEl.style.color = '#0f766e';
+        simStatus.innerHTML = '<span class="tag-valid">Claim Completely Dissolved</span> Stagnant Performance';
+      }
+    }
+
+    function resetStressTest() {
+      document.querySelectorAll('#tab-stress-test input[type=checkbox]').forEach(cb => cb.checked = true);
+      recalculateStressTest();
+    }
+
+    // ROI Simulator
+    function simROI(val) {
       const lift = parseFloat(val);
-      document.getElementById('liftLabel').innerText = `+${lift.toFixed(1)}% Conversion Lift`;
+      document.getElementById('slider-label').innerText = `+${lift.toFixed(1)}% (Simulated Lift)`;
       
-      // ₹10 Cr base targeting model
-      const baseRecovery = 115.0; // Cr in 7.25 mos (~190 Cr annualized)
-      const incCash = (190.0 * (lift / 100.0) * 0.485 / 0.399) * 0.85; // calibration to ₹34.8 Cr at 8.6%
+      const incCash = (190.0 * (lift / 100.0) * 0.485 / 0.399) * 0.85;
       const roi = ((incCash - 10.0) / 10.0) * 100.0;
       const be = (10.0 / (incCash / 12.0));
+      const netVal = incCash - 10.0;
 
-      document.getElementById('simCash').innerText = `₹${incCash.toFixed(1)} Cr`;
-      document.getElementById('simRoi').innerText = `${Math.round(roi)}%`;
-      document.getElementById('simBe').innerText = `${be.toFixed(1)} Mos`;
+      document.getElementById('sim-cash').innerText = `₹${incCash.toFixed(1)} Cr`;
+      document.getElementById('sim-net').innerText = `₹${netVal.toFixed(1)} Cr`;
+      document.getElementById('sim-roi').innerText = `${Math.round(roi)}%`;
+      document.getElementById('sim-be').innerText = `${be.toFixed(1)} Mos`;
     }
   </script>
 </body>

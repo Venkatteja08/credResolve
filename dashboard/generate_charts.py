@@ -90,3 +90,4 @@ for i, bar in enumerate(bars4):
 plt.tight_layout()
 plt.savefig('dashboard/dashboard_charts.png', dpi=200, bbox_inches='tight', facecolor='#0b1120')
 print("Saved dashboard/dashboard_charts.png successfully!")
+
