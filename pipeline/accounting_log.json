@@ -1,0 +1,121 @@
+{
+  "borrowers": {
+    "raw_records": 30600,
+    "rejected_records": 600,
+    "corrected_records": 0,
+    "golden_records": 11015,
+    "notes": "Removed exact duplicates and resolved unique borrower profiles."
+  },
+  "accounts": {
+    "raw_records": 30000,
+    "rejected_records": 0,
+    "corrected_records": 30000,
+    "golden_records": 30000,
+    "notes": "Validated primary key account_id; appended standardized DPD risk buckets."
+  },
+  "agents": {
+    "raw_records": 30000,
+    "rejected_records": 0,
+    "corrected_records": 29996,
+    "golden_records": 1099,
+    "notes": "Resolved multi-agent ID fragmentation into 1,099 canonical employees."
+  },
+  "agent_sessions": {
+    "raw_records": 15000,
+    "rejected_records": 0,
+    "corrected_records": 15000,
+    "golden_records": 15000,
+    "notes": "Timezone normalized to IST; validated session duration hours."
+  },
+  "calls": {
+    "raw_records": 91350,
+    "rejected_records": 1271,
+    "corrected_records": 90079,
+    "golden_records": 90079,
+    "notes": "Standardized UTC/Dubai timestamps to IST; resolved employee IDs; tagged prime hours."
+  },
+  "call_attempts": {
+    "raw_records": 120000,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 120000,
+    "notes": "Validated unique attempt_id; flagged connection events."
+  },
+  "call_dispositions": {
+    "raw_records": 35000,
+    "rejected_records": 0,
+    "corrected_records": 35027,
+    "golden_records": 35027,
+    "notes": "Unified PTP codes; audited phantom dispositions on unanswered calls."
+  },
+  "whatsapp_events": {
+    "raw_records": 60600,
+    "rejected_records": 600,
+    "corrected_records": 0,
+    "golden_records": 60000,
+    "notes": "Deduplicated events; tagged engagement funnel milestones."
+  },
+  "sms_events": {
+    "raw_records": 45000,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 45000,
+    "notes": "Validated event IDs; tagged payment link click events."
+  },
+  "field_visits": {
+    "raw_records": 25000,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 25000,
+    "notes": "Standardized field outcomes; flagged contact and on-field collection events."
+  },
+  "promises_to_pay": {
+    "raw_records": 18000,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 18000,
+    "notes": "Audited promised amount commitments and kept vs broken statuses."
+  },
+  "payments": {
+    "raw_records": 25500,
+    "rejected_records": 2681,
+    "corrected_records": 15350,
+    "golden_records": 15350,
+    "notes": "Removed 2195 retry/duplicate SUCCESS records (saved Rs 16.66 Cr double-counting)."
+  },
+  "campaigns": {
+    "raw_records": 120,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 120,
+    "notes": "Validated 120 campaign configurations across legacy and modern versions."
+  },
+  "daily_targeting": {
+    "raw_records": 45000,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 45000,
+    "notes": "Validated 45,000 targeting dispatches across channels and priorities."
+  },
+  "complaints": {
+    "raw_records": 8000,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 8000,
+    "notes": "Validated borrower complaints and escalation severities."
+  },
+  "vendor_telephony": {
+    "raw_records": 15,
+    "rejected_records": 0,
+    "corrected_records": 0,
+    "golden_records": 15,
+    "notes": "Validated 15 telephony carrier gateway definitions."
+  },
+  "account_status_history": {
+    "raw_records": 60000,
+    "rejected_records": 0,
+    "corrected_records": 25999,
+    "golden_records": 60000,
+    "notes": "Resolved event-time history and effective end-state statuses."
+  }
+}
